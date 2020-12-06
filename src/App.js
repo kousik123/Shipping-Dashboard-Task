@@ -12,11 +12,15 @@ export class App extends Component {
     this.getData();
   }
 
-  filter(type) {
+  goFilter(type) {
     let filterd = this.state.untouchedData.filter(data => {
       return data.current_status_code === type;
     });
+    return filterd;
+  }
 
+  filter(type) {
+    let filterd = this.goFilter(type);
     this.setState({ data: filterd, select: type });
   }
 
@@ -44,66 +48,77 @@ export class App extends Component {
       });
   }
 
+  getLength(type) {
+    let filterd = this.goFilter(type);
+    return filterd.length;
+  }
+
 
   render() {
     return (
       <div className="App">
-        
+
         <div className="container-fluid">
-          <div className="row justify-content-center">
-            <div className={`col-sm-1 filter ${this.state.select === 'DEL' ? 'active' : ''}`} onClick={() => this.filter('DEL')}>
-              <p>DEL</p>
-              <h2>912</h2>
-            </div>
-            <div className={`col-sm-1 filter ${this.state.select === 'INT' ? 'active' : ''}`} onClick={() => this.filter('INT')}>
-              <p>INT</p>
-              <h2>911</h2>
-            </div>
-            <div className={`col-sm-1 filter ${this.state.select === 'OOD' ? 'active' : ''}`} onClick={() => this.filter('OOD')}>
-              <p>OOD</p>
-              <h2>913</h2>
-            </div>
-            <div className={`col-sm-1 filter ${this.state.select === 'DEX' ? 'active' : ''}`} onClick={() => this.filter('DEX')}>
-              <p>DEX</p>
-              <h2>914</h2>
-            </div>
-            <div className={`col-sm-1 filter ${this.state.select === 'NFI' ? 'active' : ''}`} onClick={() => this.filter('NFI')}>
-              <p>NFI</p>
-              <h2>912</h2>
-            </div>
-          </div>
+          {
+            this.state.untouchedData.length > 0 && (<div className="row justify-content-center">
+              
+              <div  style={{backgroundColor:"ButtonShadow"}} className={`col-sm-2 filter ${this.state.select === 'DEL' ? 'active' : ''}`} onClick={() => this.filter('DEL')}>
+                <p>DEL</p>
+                <h2>{this.getLength('DEL')}</h2>
+              </div>
+
+              <div style={{backgroundColor:"darkgray"}} className={`col-sm-2 ${this.state.select === 'INT' ? 'active' : ''}`} onClick={() => this.filter('INT')}>
+                <p>INT</p>
+                <h2>{this.getLength('INT')}</h2>
+              </div>
+              <div style={{backgroundColor:"ButtonShadow"}} className={`col-sm-2 filter ${this.state.select === 'OOD' ? 'active' : ''}`} onClick={() => this.filter('OOD')}>
+                <p>OOD</p>
+                <h2>{this.getLength('OOD')}</h2>
+              </div>
+              <div style={{backgroundColor:"darkgray"}}  className={`col-sm-2 filter ${this.state.select === 'DEX' ? 'active' : ''}`} onClick={() => this.filter('DEX')}>
+                <p>DEX</p>
+                <h2>{this.getLength('DEX')}</h2>
+              </div>
+              <div style={{backgroundColor:"ButtonShadow"}} className={`col-sm-2 filter ${this.state.select === 'NFI' ? 'active' : ''}`} onClick={() => this.filter('NFI')}>
+                <p>NFI</p>
+                <h2>{this.getLength('NFI')}</h2>
+              </div>
+            </div>)
+          }
 
           <div className="row">
             <div className="col-md-12">
 
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>AWB NUMBER </th>
-                    <th>TRANSPORTER</th>
-                    <th>SOURCE</th>
-                    <th>DESTINATION</th>
-                    <th>BRAND</th>
-                    <th>START DATE</th>
-                    <th>ETD</th>
-                    <th>STATUS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.data.map((d, i) => {
-                    return <tr key={i}>
-                      <td>#{d.awbno}</td>
-                      <td>{d.carrier}</td>
-                      <td>{d.from}</td>
-                      <td>{d.to}</td>
-                      <td>USPA</td>
-                      <td>{d.pickup_date}</td>
-                      <td>{d.time}</td>
-                      <td>{d.current_status}</td>
+              <div className="table-holder">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>AWB NUMBER </th>
+                      <th>TRANSPORTER</th>
+                      <th>SOURCE</th>
+                      <th>DESTINATION</th>
+                      <th>BRAND</th>
+                      <th>START DATE</th>
+                      <th>ETD</th>
+                      <th>STATUS</th>
                     </tr>
-                  })}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {this.state.data.map((d, i) => {
+                      return <tr key={i}>
+                        <td>#{d.awbno}</td>
+                        <td>{d.carrier}</td>
+                        <td>{d.from}</td>
+                        <td>{d.to}</td>
+                        <td>USPA</td>
+                        <td>{d.pickup_date}</td>
+                        <td>{d.time}</td>
+                        <td>{d.current_status}</td>
+                      </tr>
+                    })}
+                  </tbody>
+                </table>
+              </div>
 
             </div>
           </div>
